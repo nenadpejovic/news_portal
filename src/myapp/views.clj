@@ -25,9 +25,9 @@
     [:body content]))
 
 (defn main-page []
-  (layout "My Blog"
-          [:h1 "My Blog"]
-          [:p "Welcome to my blog. This is a place where you can find a lot of interesting stuff about sports, media, culture, new etc. Welcome to my blog. This is a place where you can find a lot of interesting stuff about sports, media, culture, new etc. Welcome to my blog. This is a place where you can find a lot of interesting stuff about sports, media, culture, new etc. Welcome to my blog. This is a place where you can find a lot of interesting stuff about sports, media, culture, new etc."]))
+  (layout "News portal"
+          [:h1 "News"]
+          [:p "Welcome to news portal. This is a place where you can find a lot of interesting stuff about sports, media, culture etc. Welcome to news portal. This is a place where you can find a lot of interesting stuff about sports, media, culture etc. Welcome to news portal. This is a place where you can find a lot of interesting stuff about sports, media, culture etc. Welcome to news portal. This is a place where you can find a lot of interesting stuff about sports, media, culture etc."]))
 
 (defn admin-post-summary [post]
       (let [id (:id post)
@@ -56,20 +56,20 @@
       [:a {:href (str "/posts/" id "/more")} "Read more"]]]))
 
 (defn admin-blog-page []
-      (layout "My Blog - Administer Blog"
-              [:h1 "Administer Blog"]
-              [:h2 "All my posts"]
+      (layout "News portal - Administer page"
+              [:h1 "Administer page"]
+              [:h2 "All my news"]
               [:a {:href "/admin/add"} "Add"]
               (map #(admin-post-summary %) (posts/all))))
 
 (defn blog-page []
-  (layout "My Blog"
-          [:h1 "Blog"]
-          [:h2 "All my posts"]
+  (layout "News portal"
+          [:h1 "News"]
+          [:h2 "All news"]
           (map #(post-summary %) (posts/all))))
 
 (defn add-post []
-      (layout "My Blog - Add Post"
+      (layout "News portal - Add Post"
               (list
                 [:h2 "Add Post"]
                 (f/form-to [:post "/admin/create"]
@@ -81,7 +81,7 @@
                            (f/text-area {:rows 20} "body") [:br]
                            (f/submit-button "Save")))))
 (defn edit-post [id]
-      (layout "My Blog - Edit Post"
+      (layout "News portal - Edit Post"
               (list
                 (let [post (posts/get id)]
                      [:h2 (str "Edit Post " id)]
@@ -95,7 +95,7 @@
                                 (f/submit-button "Save"))))))
 
 (defn read-more [id]
-  (layout "My Blog - Post"
+  (layout "News portal - Post"
           (list
             (let [post (posts/get id)]
               [:section
