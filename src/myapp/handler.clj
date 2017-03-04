@@ -23,7 +23,8 @@
            (POST "/admin/:id/save" [& params]
                  (do (posts/save (:id params) params)
                      (resp/redirect "/admin")))
-           (GET "/admin/:id/more" [id] (views/read-more id))
+           (GET "/admin/:id/more" [id] (do (posts/increase_num_of_views id)
+                                           (views/read-more id)) )
            (GET "/admin/:id/delete" [id]
                 (do (posts/delete id)
                     (resp/redirect "/admin"))))

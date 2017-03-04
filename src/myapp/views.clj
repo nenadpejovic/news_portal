@@ -100,5 +100,6 @@
             (let [post (posts/get id)]
               [:section
                [:h3 (:title post)]
-               [:section (:body post)]]
+               [:section (:body post)]
+               [:p (str "Number of views: " (:num_of_views post))]]
               ))))
