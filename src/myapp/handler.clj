@@ -9,8 +9,13 @@
 
 (defroutes public-routes
            (GET "/" [] (views/main-page))
-           (GET "/posts/:id/more" [id] (views/read-more id))
+           (GET "/posts/:id/more" [id] (do (posts/increase_num_of_views id)
+                                           (views/read-more id)))
            (GET "/posts" [] (views/blog-page))
+           (GET "/like/:id" [id] (do (posts/like_post id)
+                                     (resp/redirect (str "/posts/" id "/more"))))
+           (GET "/dislike/:id" [id] (do (posts/dislike_post id)
+                                     (resp/redirect (str "/posts/" id "/more"))))
            (route/resources "/"))
 
 (defroutes protected-routes
@@ -23,11 +28,11 @@
            (POST "/admin/:id/save" [& params]
                  (do (posts/save (:id params) params)
                      (resp/redirect "/admin")))
-           (GET "/admin/:id/more" [id] (do (posts/increase_num_of_views id)
-                                           (views/read-more id)) )
+           (GET "/admin/:id/more" [id] (views/read-more-admin id) )
            (GET "/admin/:id/delete" [id]
                 (do (posts/delete id)
                     (resp/redirect "/admin"))))
+
 (defn authenticated? [name pass]
   (and (= name "user")
        (= pass "pass")))

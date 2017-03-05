@@ -30,6 +30,21 @@
   (let [num_of_views (:num_of_views (nth (retrieve_num_of_views id) 0))]
     (update_num_of_views (+ num_of_views 1) id)))
 
+(defn decrease_num_of_views [id]
+  (let [num_of_views (:num_of_views (nth (retrieve_num_of_views id) 0))]
+    (update_num_of_views (- num_of_views 1) id))
+  )
+
+(defn like_post [id]
+  (let [likes (:likes (nth (j/query mysql-db (s/select "likes" :posts (s/where {:id id}))) 0))]
+    (j/update! mysql-db :posts {:likes (+ likes 1)} (s/where {:id id}))
+    (decrease_num_of_views id))
+  )
+(defn dislike_post [id]
+  (let [dislikes (:dislikes (nth (j/query mysql-db (s/select "dislikes" :posts (s/where {:id id}))) 0))]
+    (j/update! mysql-db :posts {:dislikes (+ dislikes 1)} (s/where {:id id}))
+    (decrease_num_of_views id))
+  )
 (defn create [params]
       (j/insert! mysql-db :posts (merge params {:created_at now :updated_at now})))
 (defn save [id params]
