@@ -103,6 +103,15 @@
                [:section (:body post)]
                [:p (str "Rating: " (- (:likes post) (:dislikes post)))]]
               ))))
+
+(defn all-comments [comment]
+  (let [user (:user comment)
+        content (:content comment)]
+    [:section
+     [:h4 user]
+     [:p content]
+     ]))
+
 (defn read-more [id]
   (layout "News portal - Post"
           (list
@@ -113,5 +122,13 @@
                [:p (str "Number of views: " (:num_of_views post))]
                [:p (str "Rating: " (- (:likes post) (:dislikes post)))]
                [:a {:href (str "/like/" id )} "Like"]
-               [:a {:href (str "/dislike/" id)} "Dislike"]]
-              ))))
+               [:a {:href (str "/dislike/" id)} "Dislike"]
+               [:h3 "Comments"]
+               (map #(all-comments %) (posts/get_comments id))
+               (f/form-to [:post (str "/comment/add/" id) ]
+                          (f/label "user" "Your name:") [:br]
+                          (f/text-field "user") [:br]
+                          (f/label "title" "Content of comment")  [:br]
+                          (f/text-area {:rows 2} "content") [:br]
+                          (f/submit-button "Add"))])))
+              )

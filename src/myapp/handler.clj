@@ -16,6 +16,8 @@
                                      (resp/redirect (str "/posts/" id "/more"))))
            (GET "/dislike/:id" [id] (do (posts/dislike_post id)
                                      (resp/redirect (str "/posts/" id "/more"))))
+           (POST "/comment/add/:id" [id & params] (do (posts/add_comment id params)
+                                            (resp/redirect (str "/posts/" id "/more"))))
            (route/resources "/"))
 
 (defroutes protected-routes
